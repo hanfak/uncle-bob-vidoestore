@@ -36,7 +36,7 @@ public class VideoStoreTest {
 
     @Before
     public void setUp() {
-        customer = new Customer(new Output(), "Fred");
+        customer = new Customer(new StringOutput(), "Fred");
     }
 
     private Customer customer;
