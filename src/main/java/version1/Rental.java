@@ -6,6 +6,14 @@ public class Rental {
         this.daysRented = daysRented;
     }
 
+    public int getFrequentRenterPoints() {
+        if (getMovie().getPriceCode() == Movie.NEW_RELEASE && getDaysRented() > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
     public double getCharge() {
         double thisAmount = 0;
 
