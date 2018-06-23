@@ -14,20 +14,7 @@ public class Movie {
     }
 
     double getCharge(int daysRented) {
-        double thisAmount = 0;
-
-        switch (getPriceCode()) {
-            case REGULAR:
-                thisAmount = price.getAmount(daysRented);
-                break;
-            case NEW_RELEASE:
-                thisAmount = price.getAmount(daysRented);
-                break;
-            case CHILDRENS:
-                thisAmount = price.getAmount(daysRented);
-                break;
-        }
-        return thisAmount;
+        return price.getAmount(daysRented);
     }
 
     int getPriceCode() {
