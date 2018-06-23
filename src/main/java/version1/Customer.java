@@ -3,23 +3,23 @@ package version1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
 
-    public Customer(String name) {
+    Customer(String name) {
         this.name = name;
     }
 
-    public void addRental(Rental rental) {
+    void addRental(Rental rental) {
         rentals.add(rental);
     }
 
-    public String getName() {
+    private String getName() {
         return name;
     }
 
-    public String statement() {
+    String statement() {
         String result = "Rental Record for " + getName() + "\n";
 
         for (Rental rental : rentals) {
