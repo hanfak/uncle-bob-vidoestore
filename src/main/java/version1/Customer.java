@@ -5,8 +5,8 @@ import java.util.List;
 
 class Customer {
     private final String name;
-    private final List<Rental> rentals = new ArrayList<>();
     private final Output output;
+    private final List<Rental> rentals = new ArrayList<>();
 
     Customer(Output output, String name) {
         this.output = output;
