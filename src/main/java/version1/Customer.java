@@ -19,6 +19,8 @@ class Customer {
         return name;
     }
 
+    // TODO extract to dependecy, and can call html or text printer, pass rentals, getTotals
+    @SuppressWarnings("StringConcatenationInLoop") // Small amount no performance issues affected
     String statement() {
         String result = "Rental Record for " + getName() + "\n";
 
