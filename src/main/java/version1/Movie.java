@@ -6,15 +6,11 @@ public class Movie {
     static final int NEW_RELEASE = 1;
 
     private String title;
-    private int priceCode;
+    private Price price;
 
-    Movie(String title, int priceCode) {
+    Movie(String title, Price price) {
         this.title = title;
-        setPriceCode(priceCode);
-    }
-
-    private void setPriceCode(int priceCode) {
-        this.priceCode = priceCode;
+        this.price = price;
     }
 
     double getCharge(int daysRented) {
@@ -41,7 +37,7 @@ public class Movie {
     }
 
     int getPriceCode() {
-        return priceCode;
+        return price.getPriceCode();
     }
 
     String getTitle() {
