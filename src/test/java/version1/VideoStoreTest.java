@@ -21,7 +21,7 @@ public class VideoStoreTest {
 
     @Test
     public void testSingleChildrensStatement() {
-        customer.addRental(new Rental(new Movie("The Tigger Movie", new ChildrensPrice()), 3));
+        customer.addRental(new Rental(new Movie("The Tigger Movie", new ChildrenPrice()), 3));
         assertEquals("Rental Record for Fred\n\tThe Tigger Movie\t1.5\nAmount owed 1.5\nYou earned 1 frequent renter points\n", customer.statement());
     }
 

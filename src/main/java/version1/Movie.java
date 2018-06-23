@@ -1,7 +1,7 @@
 package version1;
 
 public class Movie {
-    static final int CHILDRENS = 2;
+    static final int CHILDREN = 2;
     static final int REGULAR = 0;
     static final int NEW_RELEASE = 1;
 
@@ -17,10 +17,6 @@ public class Movie {
         return price.getAmount(daysRented);
     }
 
-    int getPriceCode() {
-        return price.getPriceCode();
-    }
-
     String getTitle() {
         return title;
     }
@@ -31,5 +27,9 @@ public class Movie {
         } else {
             return 1;
         }
+    }
+
+    private int getPriceCode() {
+        return price.getPriceCode();
     }
 }
