@@ -13,8 +13,8 @@ class Rental {
         return movie.getFrequentRenterPoints(getDaysRented());
     }
 
-    Movie getMovie() {
-        return movie;
+    String getMovieTitle() {
+        return movie.getTitle();
     }
 
     double getCharge() {

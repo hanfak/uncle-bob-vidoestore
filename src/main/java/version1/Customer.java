@@ -15,17 +15,13 @@ class Customer {
         rentals.add(rental);
     }
 
-    private String getName() {
-        return name;
-    }
-
     // TODO extract to dependecy, and can call html or text printer, pass rentals, getTotals
     @SuppressWarnings("StringConcatenationInLoop") // Small amount no performance issues affected
     String statement() {
         String result = "Rental Record for " + getName() + "\n";
 
         for (Rental rental : rentals) {
-            result += "\t" + rental.getMovie().getTitle() + "\t"
+            result += "\t" + rental.getMovieTitle() + "\t"
                     + String.valueOf(rental.getCharge()) + "\n";
         }
 
@@ -34,6 +30,9 @@ class Customer {
                 " frequent renter points\n";
 
         return result;
+    }
+    private String getName() {
+        return name;
     }
 
     private int getTotalFrequentRenterPoints() {
