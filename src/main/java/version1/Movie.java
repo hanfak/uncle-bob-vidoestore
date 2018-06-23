@@ -10,6 +10,10 @@ public class Movie {
 
     Movie(String title, int priceCode) {
         this.title = title;
+        setPriceCode(priceCode);
+    }
+
+    private void setPriceCode(int priceCode) {
         this.priceCode = priceCode;
     }
 
