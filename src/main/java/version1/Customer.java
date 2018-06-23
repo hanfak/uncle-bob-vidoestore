@@ -26,9 +26,7 @@ public class Customer {
         String result = "Rental Record for " + getName() + "\n";
 
         for (Rental rental :rentals) {
-            double thisAmount = 0;
-
-            thisAmount = amountFor(rental);
+            double thisAmount = amountFor(rental);
 
             frequentRenterPoints++;
 
