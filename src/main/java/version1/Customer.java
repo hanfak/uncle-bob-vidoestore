@@ -6,8 +6,10 @@ import java.util.List;
 class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
+    private final Output output;
 
-    Customer(String name) {
+    Customer(Output output, String name) {
+        this.output = output;
         this.name = name;
     }
 
@@ -15,22 +17,10 @@ class Customer {
         rentals.add(rental);
     }
 
-    // TODO extract to dependecy, and can call html or text printer, pass rentals, getTotals
-    @SuppressWarnings("StringConcatenationInLoop") // Small amount no performance issues affected
     String statement() {
-        String result = "Rental Record for " + getName() + "\n";
-
-        for (Rental rental : rentals) {
-            result += "\t" + rental.getMovieTitle() + "\t"
-                    + String.valueOf(rental.getCharge()) + "\n";
-        }
-
-        result += "Amount owed " + String.valueOf(getTotalCharge()) + "\n";
-        result += "You earned " + String.valueOf(getTotalFrequentRenterPoints()) +
-                " frequent renter points\n";
-
-        return result;
+        return output.print(rentals, getName(), getTotalCharge(), getTotalFrequentRenterPoints());
     }
+
     private String getName() {
         return name;
     }
