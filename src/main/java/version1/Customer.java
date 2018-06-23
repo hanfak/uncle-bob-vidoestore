@@ -34,8 +34,8 @@ public class Customer {
                 frequentRenterPoints++;
 
             result += "\t" + rental.getMovie().getTitle() + "\t"
-                    + String.valueOf(rental.amountFor(rental)) + "\n";
-            totalAmount += rental.amountFor(rental);
+                    + String.valueOf(rental.getCharge()) + "\n";
+            totalAmount += rental.getCharge();
         }
 
         result += "You owed " + String.valueOf(totalAmount) + "\n";
