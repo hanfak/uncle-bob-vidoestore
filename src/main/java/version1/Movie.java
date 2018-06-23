@@ -21,13 +21,10 @@ public class Movie {
                 thisAmount = price.getAmount(daysRented);
                 break;
             case NEW_RELEASE:
-                thisAmount += daysRented * 3;
+                thisAmount = price.getAmount(daysRented);
                 break;
             case CHILDRENS:
-                thisAmount += 1.5;
-                if (daysRented > 3) {
-                    thisAmount += (daysRented - 3) * 1.5;
-                }
+                thisAmount = price.getAmount(daysRented);
                 break;
         }
         return thisAmount;

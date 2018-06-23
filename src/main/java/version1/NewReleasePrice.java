@@ -8,6 +8,6 @@ class NewReleasePrice extends Price {
 
     @Override
     public double getAmount(int daysRented) {
-        return 0;
+        return daysRented * 3;
     }
 }
