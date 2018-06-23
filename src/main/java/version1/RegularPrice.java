@@ -3,10 +3,13 @@ package version1;
 class RegularPrice extends Price {
     @Override
     public double getAmount(int daysRented) {
-        double thisAmount = 2;
+        return 2 + amountAfterDaysRented(daysRented);
+    }
+
+    private double amountAfterDaysRented(int daysRented) {
         if (daysRented > 2) {
-            thisAmount += (daysRented - 2) * 1.5;
+            return (daysRented - 2) * 1.5;
         }
-        return thisAmount;
+        return 0;
     }
 }

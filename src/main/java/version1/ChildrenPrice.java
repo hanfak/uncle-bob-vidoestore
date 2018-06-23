@@ -3,10 +3,13 @@ package version1;
 class ChildrenPrice extends Price {
     @Override
     public double getAmount(int daysRented) {
-        double thisAmount = 1.5;
+        return 1.5 + amountAfterDaysRented(daysRented);
+    }
+
+    private double amountAfterDaysRented(int daysRented) {
         if (daysRented > 3) {
-            thisAmount += (daysRented - 3) * 1.5;
+            return (daysRented - 3) * 1.5;
         }
-        return thisAmount;
+        return 0;
     }
 }
