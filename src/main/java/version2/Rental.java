@@ -2,19 +2,19 @@ package version2;
 
 public class Rental {
 
+    private final Movie movie;
+    private final int daysRented;
+
     public Rental(Movie movie, int daysRented) {
         this.movie = movie;
         this.daysRented = daysRented;
     }
 
     public int getDaysRented() {
-        return daysRented;
+        return this.daysRented;
     }
 
     public Movie getMovie() {
-        return movie;
+        return this.movie;
     }
-
-    private Movie movie;
-    private int daysRented;
 }

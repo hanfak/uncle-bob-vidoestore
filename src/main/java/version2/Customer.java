@@ -1,12 +1,14 @@
 package version2;
 
-import version2.Movie;
-import version2.Rental;
-
 import java.util.Enumeration;
 import java.util.Vector;
 
 public class Customer {
+
+    private final String name;
+
+    private final Vector<Rental> rentals = new Vector<>();
+
     public Customer(String name) {
         this.name = name;
     }
@@ -22,12 +24,12 @@ public class Customer {
     public String statement() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
-        Enumeration rentals = this.rentals.elements();
-        String result = "Rental Record for " + getName() + "\n";
+        Enumeration<Rental> rentals = this.rentals.elements();
+        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
         while (rentals.hasMoreElements()) {
             double thisAmount = 0;
-            Rental each = (Rental) rentals.nextElement();
+            Rental each = rentals.nextElement();
 
             // determines the amount for each line
             switch (each.getMovie().getPriceCode()) {
@@ -52,20 +54,13 @@ public class Customer {
                     && each.getDaysRented() > 1)
                 frequentRenterPoints++;
 
-            result += "\t" + each.getMovie().getTitle() + "\t"
-                    + String.valueOf(thisAmount) + "\n";
+            result.append("\t").append(each.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
             totalAmount += thisAmount;
-
         }
 
-        result += "You owed " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points\n";
+        result.append("You owed ").append(totalAmount).append("\n");
+        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
 
-
-        return result;
+        return result.toString();
     }
-
-
-    private String name;
-    private Vector<Rental> rentals = new Vector<>();
 }
