@@ -21,45 +21,45 @@ public class Customer {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
         Enumeration<Rental> moviesRented = this.moviesRented.elements();
-        StringBuilder result = new StringBuilder("Rental Record for " + this.customerName + "\n");
+        StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n");
 
         while (moviesRented.hasMoreElements()) {
             double thisAmount = 0;
-            Rental each = moviesRented.nextElement();
+            Rental rentedMovie = moviesRented.nextElement();
 
             // determines the amount for each line
-            switch (each.getMovie().getPriceCode()) {
+            switch (rentedMovie.getMovie().getPriceCode()) {
                 case Movie.REGULAR:
                     thisAmount += 2;
-                    if (each.getDaysRented() > 2) {
-                        thisAmount += (each.getDaysRented() - 2) * 1.5;
+                    if (rentedMovie.getDaysRented() > 2) {
+                        thisAmount += (rentedMovie.getDaysRented() - 2) * 1.5;
                     }
                     break;
                 case Movie.NEW_RELEASE:
-                    thisAmount += each.getDaysRented() * 3;
+                    thisAmount += rentedMovie.getDaysRented() * 3;
                     break;
                 case Movie.CHILDRENS:
                     thisAmount += 1.5;
-                    if (each.getDaysRented() > 3) {
-                        thisAmount += (each.getDaysRented() - 3) * 1.5;
+                    if (rentedMovie.getDaysRented() > 3) {
+                        thisAmount += (rentedMovie.getDaysRented() - 3) * 1.5;
                     }
                     break;
             }
 
             frequentRenterPoints++;
 
-            if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE && each.getDaysRented() > 1) {
+            if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
                 frequentRenterPoints++;
             }
 
-            result.append("\t").append(each.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
+            customerStatement.append("\t").append(rentedMovie.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
             totalAmount += thisAmount;
         }
 
-        result.append("You owed ").append(totalAmount).append("\n");
-        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
+        customerStatement.append("You owed ").append(totalAmount).append("\n");
+        customerStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
 
-        return result.toString();
+        return customerStatement.toString();
     }
 
     public String getName() { // Want to get rid, but maybe part of api
