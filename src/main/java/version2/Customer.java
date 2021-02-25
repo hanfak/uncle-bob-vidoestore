@@ -24,27 +24,9 @@ public class Customer {
         StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n");
 
         while (moviesRented.hasMoreElements()) {
-            double thisAmount = 0;
             Rental rentedMovie = moviesRented.nextElement();
 
-            // determines the amount for each line
-            switch (rentedMovie.getMovie().getPriceCode()) {
-                case Movie.REGULAR:
-                    thisAmount += 2;
-                    if (rentedMovie.getDaysRented() > 2) {
-                        thisAmount += (rentedMovie.getDaysRented() - 2) * 1.5;
-                    }
-                    break;
-                case Movie.NEW_RELEASE:
-                    thisAmount += rentedMovie.getDaysRented() * 3;
-                    break;
-                case Movie.CHILDRENS:
-                    thisAmount += 1.5;
-                    if (rentedMovie.getDaysRented() > 3) {
-                        thisAmount += (rentedMovie.getDaysRented() - 3) * 1.5;
-                    }
-                    break;
-            }
+            double thisAmount = calculateAmountOwedForRentedMovie(rentedMovie);
 
             frequentRenterPoints++;
 
@@ -60,6 +42,39 @@ public class Customer {
         customerStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
 
         return customerStatement.toString();
+    }
+
+    private double calculateAmountOwedForRentedMovie(Rental rentedMovie) {
+        switch (rentedMovie.getMovie().getPriceCode()) {
+            case Movie.REGULAR:
+                return amountForRegularRental(rentedMovie);
+            case Movie.NEW_RELEASE:
+                return amountForNewReleaseRental(rentedMovie);
+            case Movie.CHILDRENS:
+                return amountForChildrensRental(rentedMovie);
+            default:
+                return 0;
+        }
+    }
+
+    private double amountForChildrensRental(Rental rentedMovie) {
+        double thisAmount = 1.5;
+        if (rentedMovie.getDaysRented() > 3) {
+            return thisAmount + (rentedMovie.getDaysRented() - 3) * 1.5;
+        }
+        return thisAmount;
+    }
+
+    private int amountForNewReleaseRental(Rental rentedMovie) {
+        return rentedMovie.getDaysRented() * 3;
+    }
+
+    private double amountForRegularRental(Rental rentedMovie) {
+        double thisAmount = 2;
+        if (rentedMovie.getDaysRented() > 2) {
+            return thisAmount +  (rentedMovie.getDaysRented() - 2) * 1.5;
+        }
+        return thisAmount;
     }
 
     public String getName() { // Want to get rid, but maybe part of api
