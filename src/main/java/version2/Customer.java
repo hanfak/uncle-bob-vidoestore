@@ -28,13 +28,9 @@ public class Customer {
 
             double thisAmount = calculateAmountOwedForRentedMovie(rentedMovie);
 
-            frequentRenterPoints++;
+            frequentRenterPoints += calculateFrequentRenterPoints(rentedMovie);
 
-            if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
-                frequentRenterPoints++;
-            }
-
-            customerStatement.append("\t").append(rentedMovie.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
+            rentalMovieStatment(customerStatement, rentedMovie, thisAmount);
             totalAmount += thisAmount;
         }
 
@@ -42,6 +38,18 @@ public class Customer {
         customerStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
 
         return customerStatement.toString();
+    }
+
+    private int calculateFrequentRenterPoints(Rental rentedMovie) {
+        if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
+            return 2;
+        } else {
+             return 1;
+        }
+    }
+
+    private void rentalMovieStatment(StringBuilder customerStatement, Rental rentedMovie, double thisAmount) {
+        customerStatement.append("\t").append(rentedMovie.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
     }
 
     private double calculateAmountOwedForRentedMovie(Rental rentedMovie) {
