@@ -2,6 +2,8 @@ package version2;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.*;
+
 public class Customer {
 
     private final String customerName;
@@ -17,41 +19,20 @@ public class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        Iterator<Rental> moviesRented = this.moviesRented.iterator();
-        StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n");
-
-        while (moviesRented.hasNext()) {
-            Rental rentedMovie = moviesRented.next();
-
-            double thisAmount = calculateAmountOwedForRentedMovie(rentedMovie);
-
-            frequentRenterPoints += calculateFrequentRenterPoints(rentedMovie);
-
-            rentalMovieStatment(customerStatement, rentedMovie, thisAmount);
-            totalAmount += thisAmount;
-        }
-
-
-        customerStatement.append("You owed ").append(totalAmount).append("\n");
-        customerStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
-
-        return customerStatement.toString();
+        Map<Rental, Double> amountPerRental = this.moviesRented.stream()
+                .collect(toMap(
+                        x -> x, this::calculateAmountOwedForRentedMovie,
+                        (o1, o2) -> o1, LinkedHashMap::new));
+        double totalAmount = amountPerRental.values().stream().reduce(0.0, Double::sum);
+        int frequentRenterPoints = this.moviesRented.stream().mapToInt(this::calculateFrequentRenterPoints).sum();
+        return createStatement(totalAmount, frequentRenterPoints, amountPerRental);
     }
 
-    private int calculateFrequentRenterPoints(Rental rentedMovie) {
-        if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
-            return 2;
-        } else {
-             return 1;
-        }
+    public String getName() { // Want to get rid, but maybe part of api
+        return this.customerName;
     }
 
-    private void rentalMovieStatment(StringBuilder customerStatement, Rental rentedMovie, double thisAmount) {
-        customerStatement.append("\t").append(rentedMovie.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
-    }
-
+    // TODO turn Movies into enum, use abstract method for each movie type
     private double calculateAmountOwedForRentedMovie(Rental rentedMovie) {
         switch (rentedMovie.getMovie().getPriceCode()) {
             case Movie.REGULAR:
@@ -66,11 +47,14 @@ public class Customer {
     }
 
     private double amountForChildrensRental(Rental rentedMovie) {
-        double thisAmount = 1.5;
-        if (rentedMovie.getDaysRented() > 3) {
-            return thisAmount + (rentedMovie.getDaysRented() - 3) * 1.5;
+        return 1.5 + amountForChildrensRentalAfterDaysRented(rentedMovie.getDaysRented());
+    }
+
+    private double amountForChildrensRentalAfterDaysRented(int daysRented) {
+        if (daysRented > 3) {
+            return (daysRented - 3) * 1.5;
         }
-        return thisAmount;
+        return 0;
     }
 
     private int amountForNewReleaseRental(Rental rentedMovie) {
@@ -78,14 +62,35 @@ public class Customer {
     }
 
     private double amountForRegularRental(Rental rentedMovie) {
-        double thisAmount = 2;
-        if (rentedMovie.getDaysRented() > 2) {
-            return thisAmount +  (rentedMovie.getDaysRented() - 2) * 1.5;
-        }
-        return thisAmount;
+        return 2 + amountForRegularRentalAfterDaysRented(rentedMovie.getDaysRented());
     }
 
-    public String getName() { // Want to get rid, but maybe part of api
-        return this.customerName;
+    private double amountForRegularRentalAfterDaysRented(int daysRented) {
+        if (daysRented > 2) {
+            return (daysRented - 2) * 1.5;
+        }
+        return 0;
     }
+
+    private int calculateFrequentRenterPoints(Rental rentedMovie) {
+        if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
+            return 2;
+        }
+        return 1;
+    }
+
+    // TODO extract to delegate
+    private String createStatement(double totalAmount, int frequentRenterPoints, Map<Rental, Double> amountPerRental) {
+        String singleMovieRentalStatement = amountPerRental.entrySet().stream()
+                .map(e -> "\t" + e.getKey().getMovie().getTitle() + "\t" + e.getValue())
+                .collect(joining("\n"));
+        final StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n")
+                .append(singleMovieRentalStatement);
+        if (moviesRented.size() > 0) customerStatement.append("\n");
+        return customerStatement
+                .append("You owed ").append(totalAmount).append("\n")
+                .append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n")
+                .toString();
+    }
+
 }
