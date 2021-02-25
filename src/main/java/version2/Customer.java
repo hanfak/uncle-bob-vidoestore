@@ -1,30 +1,29 @@
 package version2;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 
 public class Customer {
 
     private final String customerName;
 
-    private final Vector<Rental> moviesRented = new Vector<>();
+    private final List<Rental> moviesRented = new ArrayList<>();
 
     public Customer(String customerName) {
         this.customerName = customerName;
     }
 
     public void addRental(Rental rentalMovie) {
-        moviesRented.addElement(rentalMovie);
+        moviesRented.add(rentalMovie);
     }
 
     public String statement() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
-        Enumeration<Rental> moviesRented = this.moviesRented.elements();
+        Iterator<Rental> moviesRented = this.moviesRented.iterator();
         StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n");
 
-        while (moviesRented.hasMoreElements()) {
-            Rental rentedMovie = moviesRented.nextElement();
+        while (moviesRented.hasNext()) {
+            Rental rentedMovie = moviesRented.next();
 
             double thisAmount = calculateAmountOwedForRentedMovie(rentedMovie);
 
@@ -33,6 +32,7 @@ public class Customer {
             rentalMovieStatment(customerStatement, rentedMovie, thisAmount);
             totalAmount += thisAmount;
         }
+
 
         customerStatement.append("You owed ").append(totalAmount).append("\n");
         customerStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points\n");
