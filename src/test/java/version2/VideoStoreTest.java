@@ -22,9 +22,9 @@ class VideoStoreTest {
     @Test
     void testDualNewReleaseStatement() {
         customer.addRental(new Rental(new Movie("The Cell", Movie.NEW_RELEASE), 3));
-        customer.addRental(new Rental(new Movie("The Tigger Movie", Movie.NEW_RELEASE), 3));
+        customer.addRental(new Rental(new Movie("The Tigger Movie", Movie.NEW_RELEASE), 1));
 
-        assertThat(customer.statement()).isEqualTo("Rental Record for Fred\n\tThe Cell\t9.0\n\tThe Tigger Movie\t9.0\nYou owed 18.0\nYou earned 4 frequent renter points\n");
+        assertThat(customer.statement()).isEqualTo("Rental Record for Fred\n\tThe Cell\t9.0\n\tThe Tigger Movie\t3.0\nYou owed 12.0\nYou earned 3 frequent renter points\n");
     }
 
     @Test
