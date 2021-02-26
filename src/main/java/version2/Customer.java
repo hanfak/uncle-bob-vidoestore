@@ -3,6 +3,7 @@ package version2;
 import java.util.*;
 
 import static java.util.stream.Collectors.*;
+import static version2.PriceCode.*;
 
 public class Customer {
 
@@ -21,7 +22,7 @@ public class Customer {
     public String statement() {
         Map<Rental, Double> amountPerRental = this.moviesRented.stream()
                 .collect(toMap(
-                        x -> x, this::calculateAmountOwedForRentedMovie,
+                        x -> x, Rental::calculateAmountOwedForRentedMovie,
                         (o1, o2) -> o1, LinkedHashMap::new));
         double totalAmount = amountPerRental.values().stream().reduce(0.0, Double::sum);
         int frequentRenterPoints = this.moviesRented.stream().mapToInt(this::calculateFrequentRenterPoints).sum();
@@ -32,48 +33,8 @@ public class Customer {
         return this.customerName;
     }
 
-    // TODO turn Movies into enum, use abstract method for each movie type
-    private double calculateAmountOwedForRentedMovie(Rental rentedMovie) {
-        switch (rentedMovie.getMovie().getPriceCode()) {
-            case Movie.REGULAR:
-                return amountForRegularRental(rentedMovie);
-            case Movie.NEW_RELEASE:
-                return amountForNewReleaseRental(rentedMovie);
-            case Movie.CHILDRENS:
-                return amountForChildrensRental(rentedMovie);
-            default:
-                return 0;
-        }
-    }
-
-    private double amountForChildrensRental(Rental rentedMovie) {
-        return 1.5 + amountForChildrensRentalAfterDaysRented(rentedMovie.getDaysRented());
-    }
-
-    private double amountForChildrensRentalAfterDaysRented(int daysRented) {
-        if (daysRented > 3) {
-            return (daysRented - 3) * 1.5;
-        }
-        return 0;
-    }
-
-    private int amountForNewReleaseRental(Rental rentedMovie) {
-        return rentedMovie.getDaysRented() * 3;
-    }
-
-    private double amountForRegularRental(Rental rentedMovie) {
-        return 2 + amountForRegularRentalAfterDaysRented(rentedMovie.getDaysRented());
-    }
-
-    private double amountForRegularRentalAfterDaysRented(int daysRented) {
-        if (daysRented > 2) {
-            return (daysRented - 2) * 1.5;
-        }
-        return 0;
-    }
-
     private int calculateFrequentRenterPoints(Rental rentedMovie) {
-        if (rentedMovie.getMovie().getPriceCode() == Movie.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
+        if (rentedMovie.getMovie().getPriceCode() == PriceCode.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
             return 2;
         }
         return 1;

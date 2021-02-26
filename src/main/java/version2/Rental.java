@@ -1,5 +1,7 @@
 package version2;
 
+import static version2.PriceCode.*;
+
 public class Rental {
 
     private final Movie movie;
@@ -16,5 +18,9 @@ public class Rental {
 
     public Movie getMovie() {
         return this.movie;
+    }
+
+    public double calculateAmountOwedForRentedMovie() {
+        return movie.getPriceCode().cost(daysRented);
     }
 }
