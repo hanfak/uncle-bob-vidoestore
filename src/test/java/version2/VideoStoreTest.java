@@ -57,7 +57,7 @@ class VideoStoreTest {
 
     @BeforeEach
     void setUp() {
-        customer = new Customer("Fred", new Statement(), new RentalsRepository());
+        customer = new Customer("Fred", new Statement(), new RentalsRepository(), new FrequentRenterPointsService());
     }
 
     private Customer customer;
