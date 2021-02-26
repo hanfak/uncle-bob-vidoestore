@@ -1,7 +1,7 @@
 package version2;
 
 public enum PriceCode {
-    CHILDRENS(2) {
+    CHILDRENS {
         @Override
         double cost(int daysRented) {
             return 1.5 + amountForChildrensRentalAfterDaysRented(daysRented);
@@ -14,7 +14,7 @@ public enum PriceCode {
             return 0;
         }
     },
-    REGULAR(0) {
+    REGULAR {
         @Override
         double cost(int daysRented) {
             return 2 + amountForRegularRentalAfterDaysRented(daysRented);
@@ -27,18 +27,12 @@ public enum PriceCode {
             return 0;
         }
     },
-    NEW_RELEASE(1) {
+    NEW_RELEASE {
         @Override
         double cost(int daysRented) {
             return daysRented * 3;
         }
     };
-
-    private final int code;
-
-    PriceCode(int code) {
-        this.code = code;
-    }
 
     abstract double cost(int daysRented);
 }

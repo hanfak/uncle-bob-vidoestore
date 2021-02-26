@@ -20,6 +20,7 @@ public class Customer {
     }
 
     public String statement() {
+        // TODO Double to own type CostOfRental, with calculateAmountOwedForRentedMovie factory method taking the number of days rented adn return CostOfRental
         Map<Rental, Double> amountPerRental = this.moviesRented.stream()
                 .collect(toMap(
                         x -> x, Rental::calculateAmountOwedForRentedMovie,
@@ -33,17 +34,15 @@ public class Customer {
         return this.customerName;
     }
 
+    // TODO extract to delegate FrequentRentersPointsService
     private int calculateFrequentRenterPoints(Rental rentedMovie) {
-        if (rentedMovie.getMovie().getPriceCode() == PriceCode.NEW_RELEASE && rentedMovie.getDaysRented() > 1) {
-            return 2;
-        }
-        return 1;
+       return rentedMovie.isMovieType(NEW_RELEASE) && rentedMovie.getDaysRented() > 1 ?  2 : 1;
     }
 
     // TODO extract to delegate
     private String createStatement(double totalAmount, int frequentRenterPoints, Map<Rental, Double> amountPerRental) {
         String singleMovieRentalStatement = amountPerRental.entrySet().stream()
-                .map(e -> "\t" + e.getKey().getMovie().getTitle() + "\t" + e.getValue())
+                .map(e -> "\t" + e.getKey().getMovieTitle() + "\t" + e.getValue())
                 .collect(joining("\n"));
         final StringBuilder customerStatement = new StringBuilder("Rental Record for " + this.customerName + "\n")
                 .append(singleMovieRentalStatement);

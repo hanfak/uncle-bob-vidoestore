@@ -10,11 +10,15 @@ public class Movie {
         this.priceCode = priceCode;
     }
 
-    public PriceCode getPriceCode() {
-        return this.priceCode;
-    }
-
     public String getTitle() {
         return this.title;
+    }
+
+    public double costOfMovie(int daysRented) {
+       return priceCode.cost(daysRented);
+    }
+
+    public boolean isMovieType(PriceCode priceCode) {
+        return this.priceCode.equals(priceCode);
     }
 }
