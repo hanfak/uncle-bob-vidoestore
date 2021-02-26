@@ -1,38 +1,34 @@
 package version2;
 
-import java.util.*;
+import java.util.Map;
 
-import static java.util.stream.Collectors.*;
-import static version2.PriceCode.*;
+import static version2.PriceCode.NEW_RELEASE;
 
 public class Customer {
 
     private final String customerName;
     private final Statement statement;
+    private final RentalsRepository rentalsRepository;
 
-    private final List<Rental> moviesRented = new ArrayList<>();
-
-    public Customer(String customerName, Statement statement) {
+    public Customer(String customerName, Statement statement, RentalsRepository rentalsRepository) {
         this.customerName = customerName;
         this.statement = statement;
+        this.rentalsRepository = rentalsRepository;
     }
 
     public void addRental(Rental rentalMovie) {
-        moviesRented.add(rentalMovie);
+        this.rentalsRepository.addRental(rentalMovie);
     }
 
     public String statement() {
-        Map<Rental, Double> amountPerRental = this.moviesRented.stream()
-                .collect(toMap(
-                        x -> x, Rental::calculateAmountOwedForRentedMovie,
-                        (o1, o2) -> o1, LinkedHashMap::new));
+        Map<Rental, Double> amountPerRental = this.rentalsRepository.amountPerRental();
         double totalAmount = amountPerRental.values().stream().reduce(0.0, Double::sum);
-        int frequentRenterPoints = this.moviesRented.stream().mapToInt(this::calculateFrequentRenterPoints).sum();
+        int frequentRenterPoints = this.rentalsRepository.getRentals().stream().mapToInt(this::calculateFrequentRenterPoints).sum();
         return statement.createStatement(totalAmount, frequentRenterPoints, amountPerRental, this);
     }
 
     public boolean hasRentedAMovie() {
-        return moviesRented.size() > 0;
+        return this.rentalsRepository.hasRentedAMovie();
     }
 
     public String getName() {
