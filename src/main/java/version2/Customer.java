@@ -21,10 +21,13 @@ public class Customer {
     }
 
     public String statement() {
+        if (this.rentalsRepository.hasNoRentedMovies()) {
+            return statement.createEmptyStatement(customerName);
+        }
         Map<Rental, Double> amountPerRental = this.rentalsRepository.amountPerRental();
         double totalAmount = amountPerRental.values().stream().reduce(0.0, Double::sum);
         int frequentRenterPoints = this.frequentRenterPointsService.calculatePointsForAllRentals(this.rentalsRepository.getRentals());
-        return statement.createStatement(totalAmount, frequentRenterPoints, this.customerName, this.rentalsRepository.hasRentedAMovie(), amountPerRental.entrySet());
+        return statement.createStatement(totalAmount, frequentRenterPoints, this.customerName, amountPerRental.entrySet());
     }
 
     public String getName() {

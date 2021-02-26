@@ -23,7 +23,7 @@ public class RentalsRepository {
         return Collections.unmodifiableList(moviesRented);
     }
 
-    public boolean hasRentedAMovie() {
-        return this.moviesRented.size() > 0;
+    public boolean hasNoRentedMovies() {
+        return this.moviesRented.size() == 0;
     }
 }
