@@ -1,5 +1,6 @@
 package version2;
 
+//tODO use interface with each enum being a impl
 public enum PriceCode {
     CHILDRENS {
         @Override

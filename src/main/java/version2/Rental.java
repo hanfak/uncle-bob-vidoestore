@@ -1,6 +1,6 @@
 package version2;
 
-public class Rental {
+public final class Rental {
 
     private final Movie movie;
     private final int daysRented;
@@ -19,10 +19,10 @@ public class Rental {
     }
 
     public double calculateAmountOwedForRentedMovie() {
-        return movie.costOfMovie(daysRented);
+        return this.movie.costOfMovie(daysRented);
     }
 
     public boolean isMovieType(PriceCode priceCode) {
-        return movie.isMovieType(priceCode);
+        return this.movie.isMovieType(priceCode);
     }
 }

@@ -15,7 +15,7 @@ public class Movie {
     }
 
     public double costOfMovie(int daysRented) {
-       return priceCode.cost(daysRented);
+       return this.priceCode.cost(daysRented);
     }
 
     public boolean isMovieType(PriceCode priceCode) {
